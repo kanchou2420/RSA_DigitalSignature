@@ -1,0 +1,329 @@
+{% extends "base.html" %}
+
+{% block title %}Ký File - Chữ Ký Số{% endblock %}
+
+{% block content %}
+<div class="min-h-screen py-12 px-4">
+    <div class="max-w-4xl mx-auto">
+        <!-- Page Header -->
+        <div class="text-center mb-12 animate-fade-in">
+            <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl mb-6 animate-float">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                </svg>
+            </div>
+            <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent mb-4">
+                Ký File Số
+            </h1>
+            <p class="text-xl text-blue-100 max-w-2xl mx-auto leading-relaxed">
+                Tạo chữ ký số bảo mật với công nghệ RSA-2048 và hash SHA-256
+            </p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8">
+            <!-- Main Form -->
+            <div class="lg:col-span-2">
+                <div class="bg-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-8 shadow-2xl animate-slide-up">
+                    <div class="flex items-center space-x-3 mb-8">
+                        <div class="bg-gradient-to-r from-yellow-500 to-orange-500 p-3 rounded-xl">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">Thông tin ký file</h2>
+                    </div>
+
+                    <form method="POST" enctype="multipart/form-data" id="signForm" class="space-y-6">
+                        <!-- Signer Selection -->
+                        <div class="space-y-2">
+                            <label for="signer_name" class="flex items-center text-white font-medium text-lg">
+                                <svg class="w-5 h-5 mr-2 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                Chọn người ký
+                            </label>
+                            <div class="relative">
+                                <select class="w-full bg-white/10 border border-white/30 rounded-xl px-4 py-4 text-white placeholder-white/60 focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all duration-300 appearance-none" 
+                                        id="signer_name" name="signer_name" required>
+                                    <option value="" class="bg-gray-800 text-gray-300">-- Chọn người ký --</option>
+                                    {% for signer in signers %}
+                                    <option value="{{ signer }}" class="bg-gray-800 text-white">{{ signer }}</option>
+                                    {% endfor %}
+                                </select>
+                                <div class="absolute inset-y-0 right-0 flex items-center px-3 pointer-events-none">
+                                    <svg class="w-5 h-5 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- File Upload -->
+                        <div class="space-y-2">
+                            <label for="file" class="flex items-center text-white font-medium text-lg">
+                                <svg class="w-5 h-5 mr-2 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                </svg>
+                                Chọn file cần ký
+                            </label>
+                            <div class="relative">
+                                <input type="file" 
+                                       class="w-full bg-white/10 border border-white/30 rounded-xl px-4 py-4 text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-gradient-to-r file:from-yellow-500 file:to-orange-500 file:text-white file:font-medium hover:file:from-yellow-600 hover:file:to-orange-600 file:cursor-pointer focus:outline-none focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20 transition-all duration-300" 
+                                       id="file" name="file" required>
+                            </div>
+                            <p class="text-blue-200 text-sm flex items-center">
+                                <svg class="w-4 h-4 mr-1 text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Kích thước tối đa: 16MB
+                            </p>
+                        </div>
+
+                        <!-- Signer Info Display -->
+                        <div id="signerInfo" class="hidden bg-gradient-to-r from-white/5 to-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 animate-fade-in">
+                            <div class="flex items-center space-x-3 mb-4">
+                                <div class="bg-gradient-to-r from-green-500 to-emerald-500 p-2 rounded-lg">
+                                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-semibold text-white">Thông tin người ký</h3>
+                            </div>
+                            <div id="signaturePreview" class="text-blue-100"></div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-4 pt-6">
+                            <button type="submit" 
+                                    class="flex-1 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-bold py-4 px-8 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 animate-glow">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                </svg>
+                                <span>Ký File</span>
+                            </button>
+                            <a href="{{ url_for('index') }}" 
+                               class="flex-1 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-medium py-4 px-8 rounded-xl backdrop-blur-sm transition-all duration-300 flex items-center justify-center space-x-2 hover:border-white/50">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                                </svg>
+                                <span>Quay lại</span>
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Sidebar - Instructions -->
+            <div class="lg:col-span-1">
+                <div class="bg-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-6 shadow-2xl animate-slide-up" style="animation-delay: 0.2s;">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="bg-gradient-to-r from-blue-500 to-cyan-500 p-3 rounded-xl">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white">Hướng dẫn</h3>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">1</div>
+                            <div>
+                                <h4 class="text-white font-medium mb-1">Chọn người ký</h4>
+                                <p class="text-blue-200 text-sm">Chọn tên người sẽ ký file từ danh sách đã đăng ký</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">2</div>
+                            <div>
+                                <h4 class="text-white font-medium mb-1">Chọn file</h4>
+                                <p class="text-blue-200 text-sm">Tải lên file cần ký (tối đa 16MB)</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">3</div>
+                            <div>
+                                <h4 class="text-white font-medium mb-1">Ký file</h4>
+                                <p class="text-blue-200 text-sm">Nhấn nút "Ký File" để tạo chữ ký số</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-1">4</div>
+                            <div>
+                                <h4 class="text-white font-medium mb-1">Lưu trữ</h4>
+                                <p class="text-blue-200 text-sm">File gốc và chữ ký sẽ được lưu trữ an toàn</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Notice -->
+                    <div class="mt-8 bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-400/30 rounded-2xl p-4">
+                        <div class="flex items-start space-x-3">
+                            <div class="bg-amber-500 rounded-full p-1 flex-shrink-0 mt-1">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h4 class="text-amber-300 font-semibold text-sm mb-1">Lưu ý bảo mật</h4>
+                                <p class="text-amber-100 text-xs leading-relaxed">
+                                    Chữ ký số được tạo bằng thuật toán RSA-2048 và hash SHA-256, 
+                                    đảm bảo tính bảo mật và không thể giả mạo.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Features -->
+                    <div class="mt-6 space-y-3">
+                        <h4 class="text-white font-semibold text-sm mb-3">Tính năng bảo mật:</h4>
+                        <div class="space-y-2">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-green-400 rounded-full"></div>
+                                <span class="text-blue-200 text-xs">Mã hóa RSA 2048-bit</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-blue-400 rounded-full"></div>
+                                <span class="text-blue-200 text-xs">Băm SHA-256</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-purple-400 rounded-full"></div>
+                                <span class="text-blue-200 text-xs">Xác thực PSS</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-2 h-2 bg-yellow-400 rounded-full"></div>
+                                <span class="text-blue-200 text-xs">Lưu trữ an toàn</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('signer_name').addEventListener('change', function() {
+    const signerName = this.value;
+    const signerInfo = document.getElementById('signerInfo');
+    const signaturePreview = document.getElementById('signaturePreview');
+    
+    if (signerName) {
+        // Add loading state
+        signaturePreview.innerHTML = `
+            <div class="flex items-center space-x-2">
+                <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-400"></div>
+                <span class="text-blue-200">Đang tải thông tin...</span>
+            </div>
+        `;
+        signerInfo.classList.remove('hidden');
+        
+        fetch(`/api/signer/${signerName}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    signerInfo.classList.add('hidden');
+                } else {
+                    let content = `
+                        <div class="space-y-3">
+                            <div class="flex items-center space-x-2">
+                                <div class="bg-green-500 rounded-full p-1">
+                                    <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <span class="text-white font-medium">${signerName}</span>
+                            </div>
+                    `;
+                    
+                    if (data.signature_image) {
+                        content += `
+                            <div class="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+                                <p class="text-blue-200 text-sm mb-2">Chữ ký mẫu:</p>
+                                <div class="bg-white rounded-lg p-2">
+                                    <img src="${data.signature_image}" alt="Chữ ký của ${signerName}" 
+                                         class="max-h-20 mx-auto object-contain">
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    content += '</div>';
+                    signaturePreview.innerHTML = content;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                signaturePreview.innerHTML = `
+                    <div class="flex items-center space-x-2 text-red-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-sm">Không thể tải thông tin người ký</span>
+                    </div>
+                `;
+            });
+    } else {
+        signerInfo.classList.add('hidden');
+    }
+});
+
+// Form submission confirmation
+document.getElementById('signForm').addEventListener('submit', function(e) {
+    const signerName = document.getElementById('signer_name').value;
+    const fileName = document.getElementById('file').files[0]?.name;
+    
+    if (!confirm(`Bạn có chắc chắn muốn ký file "${fileName}" với tên "${signerName}"?`)) {
+        e.preventDefault();
+    }
+});
+
+// File selection feedback
+document.getElementById('file').addEventListener('change', function() {
+    const file = this.files[0];
+    if (file) {
+        const fileSize = (file.size / 1024 / 1024).toFixed(2);
+        
+        // Remove old feedback
+        const oldFeedback = this.parentNode.querySelector('.file-feedback');
+        if (oldFeedback) {
+            oldFeedback.remove();
+        }
+        
+        // Add new feedback
+        const feedback = document.createElement('div');
+        feedback.className = 'file-feedback mt-2 p-3 bg-green-500/20 border border-green-400/30 rounded-xl flex items-center space-x-2';
+        feedback.innerHTML = `
+            <div class="bg-green-500 rounded-full p-1">
+                <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <span class="text-green-300 text-sm">
+                Đã chọn: <strong>${file.name}</strong> (${fileSize} MB)
+            </span>
+        `;
+        
+        this.parentNode.appendChild(feedback);
+        
+        // File size warning
+        if (file.size > 16 * 1024 * 1024) {
+            feedback.className = 'file-feedback mt-2 p-3 bg-red-500/20 border border-red-400/30 rounded-xl flex items-center space-x-2';
+            feedback.innerHTML = `
+                <div class="bg-red-500 rounded-full p-1">
+                    <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <span class="text-red-300 text-sm">
+                    File quá lớn: <strong>${file.name}</strong> (${fileSize} MB). Tối đa 16MB.
+                </span>
+            `;
+        }
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,571 @@
+{% extends "base.html" %}
+
+{% block title %}Đăng ký người ký{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12 animate-fade-in">
+    <!-- Success Message (Hidden by default, shown via URL parameter) -->
+    <div id="successMessage" class="fixed top-4 right-4 z-50 transform translate-x-full transition-transform duration-500 ease-in-out">
+        <div class="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-4 rounded-xl shadow-2xl flex items-center space-x-3 min-w-80">
+            <div class="bg-white/20 rounded-full p-2">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            </div>
+            <div>
+                <h4 class="font-bold">Đăng ký thành công!</h4>
+                <p class="text-sm opacity-90">Tài khoản người ký đã được tạo thành công</p>
+            </div>
+            <button onclick="hideSuccessMessage()" class="ml-4 text-white/70 hover:text-white transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Header Section -->
+    <div class="text-center mb-12">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-500 to-emerald-500 rounded-2xl mb-6 animate-glow">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+            </svg>
+        </div>
+        <h1 class="text-4xl font-bold bg-gradient-to-r from-green-400 to-emerald-400 bg-clip-text text-transparent mb-4">
+            Đăng ký người ký mới
+        </h1>
+        <p class="text-blue-100 text-lg max-w-2xl mx-auto leading-relaxed">
+            Tạo tài khoản người ký với cặp khóa RSA 2048-bit và chữ ký số cá nhân
+        </p>
+    </div>
+
+    <!-- Main Form Card -->
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-8 lg:p-12 shadow-2xl animate-slide-up">
+            <form method="POST" class="space-y-8" onsubmit="handleFormSubmit(event)">
+                
+                <!-- Personal Info Section -->
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="bg-gradient-to-r from-blue-500 to-cyan-500 p-2 rounded-xl">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">Thông tin cá nhân</h2>
+                    </div>
+
+                    <!-- Name Input -->
+                    <div class="relative group">
+                        <label for="name" class="block text-sm font-semibold text-blue-100 mb-3">
+                            Tên người ký *
+                        </label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-blue-300 group-focus-within:text-blue-400 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                            </div>
+                            <input type="text" 
+                                   id="name" 
+                                   name="name" 
+                                   required
+                                   class="w-full pl-12 pr-4 py-4 bg-white/10 border border-white/20 rounded-xl text-white placeholder-blue-200 focus:bg-white/20 focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 focus:outline-none transition-all duration-300 backdrop-blur-sm"
+                                   placeholder="Nhập họ tên đầy đủ của bạn">
+                            <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-500/20 to-cyan-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signature Section -->
+                <div class="space-y-6">
+                    <div class="flex items-center space-x-3 mb-6">
+                        <div class="bg-gradient-to-r from-purple-500 to-pink-500 p-2 rounded-xl">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                            </svg>
+                        </div>
+                        <h2 class="text-2xl font-bold text-white">Chữ ký cá nhân</h2>
+                        <span class="bg-yellow-500/20 text-yellow-300 px-3 py-1 rounded-full text-sm font-medium">Tùy chọn</span>
+                    </div>
+
+                    <!-- Canvas Container -->
+                    <div class="relative group">
+                        <div class="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 group-hover:bg-white/15 transition-all duration-300">
+                            <div class="relative">
+                                <canvas id="signatureCanvas" 
+                                        width="700" 
+                                        height="250" 
+                                        class="w-full h-auto bg-white/90 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300 cursor-crosshair hover:border-blue-400 transition-colors duration-300 shadow-inner">
+                                </canvas>
+                                
+                                <!-- Canvas Overlay Instructions -->
+                                <div id="canvasOverlay" class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                    <div class="text-center text-gray-500">
+                                        <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                        </svg>
+                                        <p class="text-sm font-medium">Nhấn và kéo để vẽ chữ ký</p>
+                                        <p class="text-xs opacity-70">Hoặc chạm và kéo trên thiết bị di động</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Canvas Controls -->
+                            <div class="flex flex-wrap items-center justify-between mt-6 gap-4">
+                                <div class="flex space-x-3">
+                                    <button type="button" 
+                                            id="clearSignature"
+                                            class="group/btn relative px-6 py-3 bg-gradient-to-r from-red-500 to-pink-500 text-white rounded-xl hover:from-red-600 hover:to-pink-600 transition-all duration-300 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                                        <span class="flex items-center space-x-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                            <span>Xóa chữ ký</span>
+                                        </span>
+                                        <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-red-600 to-pink-600 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
+                                    </button>
+
+                                    <button type="button" 
+                                            id="undoSignature"
+                                            class="group/btn relative px-6 py-3 bg-white/10 backdrop-blur-sm border border-white/20 text-white rounded-xl hover:bg-white/20 hover:border-white/30 transition-all duration-300 font-medium">
+                                        <span class="flex items-center space-x-2">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"></path>
+                                            </svg>
+                                            <span>Hoàn tác</span>
+                                        </span>
+                                    </button>
+                                </div>
+
+                                <div class="flex items-center space-x-4">
+                                    <!-- Line Width Control -->
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-blue-100 text-sm font-medium">Độ dày:</span>
+                                        <input type="range" 
+                                               id="lineWidth" 
+                                               min="1" 
+                                               max="5" 
+                                               value="2" 
+                                               class="w-20 h-2 bg-white/20 rounded-lg appearance-none cursor-pointer">
+                                    </div>
+
+                                    <!-- Color Picker -->
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-blue-100 text-sm font-medium">Màu:</span>
+                                        <div class="flex space-x-1">
+                                            <button type="button" class="color-btn w-6 h-6 bg-black rounded-full border-2 border-white/50 hover:border-white transition-colors duration-200" data-color="#000000"></button>
+                                            <button type="button" class="color-btn w-6 h-6 bg-blue-600 rounded-full border-2 border-white/30 hover:border-white transition-colors duration-200" data-color="#2563eb"></button>
+                                            <button type="button" class="color-btn w-6 h-6 bg-green-600 rounded-full border-2 border-white/30 hover:border-white transition-colors duration-200" data-color="#16a34a"></button>
+                                            <button type="button" class="color-btn w-6 h-6 bg-red-600 rounded-full border-2 border-white/30 hover:border-white transition-colors duration-200" data-color="#dc2626"></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Instructions -->
+                            <div class="mt-6 p-4 bg-blue-500/10 backdrop-blur-sm border border-blue-400/30 rounded-xl">
+                                <div class="flex items-start space-x-3">
+                                    <div class="bg-blue-500 rounded-full p-1 mt-0.5">
+                                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h4 class="text-blue-300 font-semibold mb-2">Hướng dẫn vẽ chữ ký:</h4>
+                                        <ul class="text-blue-100 text-sm space-y-1">
+                                            <li>• Sử dụng chuột hoặc chạm màn hình để vẽ chữ ký của bạn</li>
+                                            <li>• Chữ ký này chỉ mang tính minh họa, không ảnh hưởng đến chữ ký số</li>
+                                            <li>• Bạn có thể điều chỉnh độ dày nét vẽ và màu sắc</li>
+                                            <li>• Sử dụng nút "Hoàn tác" để xóa nét vẽ cuối cùng</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="signature_image" name="signature_image">
+                    </div>
+                </div>
+
+                <!-- Security Info Section -->
+                <div class="bg-gradient-to-r from-blue-500/10 to-purple-500/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-gradient-to-r from-yellow-400 to-orange-400 p-3 rounded-xl flex-shrink-0">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-xl font-bold text-white mb-4">Thông tin bảo mật</h3>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="space-y-3">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-green-500 rounded-full p-1">
+                                            <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-blue-100 text-sm">Tự động tạo cặp khóa RSA 2048-bit</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-green-500 rounded-full p-1">
+                                            <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-blue-100 text-sm">Khóa riêng tư được lưu trữ an toàn</span>
+                                    </div>
+                                </div>
+                                <div class="space-y-3">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-green-500 rounded-full p-1">
+                                            <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-blue-100 text-sm">Tên người ký phải duy nhất</span>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-green-500 rounded-full p-1">
+                                            <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                            </svg>
+                                        </div>
+                                        <span class="text-blue-100 text-sm">Tuân thủ tiêu chuẩn mã hóa quốc tế</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 pt-8">
+                    <button type="submit" 
+                            id="submitBtn"
+                            class="group relative px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-500 text-white rounded-xl hover:from-green-600 hover:to-emerald-600 transition-all duration-300 font-semibold text-lg shadow-xl hover:shadow-2xl transform hover:-translate-y-1">
+                        <span id="submitBtnText" class="flex items-center justify-center space-x-3">
+                            <svg id="submitIcon" class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                            </svg>
+                            <span>Đăng ký ngay</span>
+                        </span>
+                        <div class="absolute inset-0 rounded-xl bg-gradient-to-r from-green-600 to-emerald-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    </button>
+                    
+                    <a href="{{ url_for('index') }}" 
+                       class="group relative px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 text-white rounded-xl hover:bg-white/20 hover:border-white/30 transition-all duration-300 font-semibold text-lg text-center">
+                        <span class="flex items-center justify-center space-x-3">
+                            <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                            </svg>
+                            <span>Quay lại</span>
+                        </span>
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Success message functions
+function showSuccessMessage() {
+    const successMsg = document.getElementById('successMessage');
+    if (successMsg) {
+        successMsg.classList.remove('translate-x-full');
+        successMsg.classList.add('translate-x-0');
+        
+        // Auto hide after 5 seconds
+        setTimeout(() => {
+            hideSuccessMessage();
+        }, 5000);
+    }
+}
+
+function hideSuccessMessage() {
+    const successMsg = document.getElementById('successMessage');
+    if (successMsg) {
+        successMsg.classList.remove('translate-x-0');
+        successMsg.classList.add('translate-x-full');
+    }
+}
+
+// Form submission handler
+function handleFormSubmit(event) {
+    event.preventDefault();
+    
+    const form = event.target;
+    const submitBtn = document.getElementById('submitBtn');
+    const submitBtnText = document.getElementById('submitBtnText');
+    const submitIcon = document.getElementById('submitIcon');
+    
+    // Show loading state
+    submitBtn.disabled = true;
+    submitBtn.classList.add('opacity-75', 'cursor-not-allowed');
+    submitBtnText.innerHTML = `
+        <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        </svg>
+        <span>Đang xử lý...</span>
+    `;
+    
+    // Create FormData
+    const formData = new FormData(form);
+    
+    // Submit form using fetch
+    fetch(form.action || window.location.href, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        if (response.ok) {
+            // Registration successful - redirect to home with success parameter
+            window.location.href = "{{ url_for('index') }}?registration=success";
+        } else {
+            throw new Error('Registration failed');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        
+        // Reset button state
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-75', 'cursor-not-allowed');
+        submitBtnText.innerHTML = `
+            <svg class="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+            </svg>
+            <span>Đăng ký ngay</span>
+        `;
+        
+        // Show error message
+        alert('Có lỗi xảy ra khi đăng ký. Vui lòng thử lại!');
+    });
+}
+
+// Check URL parameters for success message
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('registration') === 'success') {
+        showSuccessMessage();
+        // Clean URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    const canvas = document.getElementById('signatureCanvas');
+    const ctx = canvas.getContext('2d');
+    const signatureInput = document.getElementById('signature_image');
+    const clearBtn = document.getElementById('clearSignature');
+    const undoBtn = document.getElementById('undoSignature');
+    const lineWidthSlider = document.getElementById('lineWidth');
+    const colorBtns = document.querySelectorAll('.color-btn');
+    const canvasOverlay = document.getElementById('canvasOverlay');
+    
+    let isDrawing = false;
+    let hasSignature = false;
+    let paths = [];
+    let currentPath = [];
+    let currentColor = '#000000';
+    let currentLineWidth = 2;
+
+    // Set canvas size for high DPI displays
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+    canvas.style.width = rect.width + 'px';
+    canvas.style.height = rect.height + 'px';
+
+    // Canvas setup
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.imageSmoothingEnabled = true;
+
+    // Mouse events
+    canvas.addEventListener('mousedown', startDrawing);
+    canvas.addEventListener('mousemove', draw);
+    canvas.addEventListener('mouseup', stopDrawing);
+    canvas.addEventListener('mouseout', stopDrawing);
+
+    // Touch events for mobile
+    canvas.addEventListener('touchstart', handleTouch);
+    canvas.addEventListener('touchmove', handleTouch);
+    canvas.addEventListener('touchend', stopDrawing);
+    canvas.addEventListener('touchcancel', stopDrawing);
+
+    // Color selection
+    colorBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            // Remove active state from all buttons
+            colorBtns.forEach(b => b.classList.remove('ring-2', 'ring-white', 'ring-offset-2', 'ring-offset-transparent'));
+            // Add active state to clicked button
+            this.classList.add('ring-2', 'ring-white', 'ring-offset-2', 'ring-offset-transparent');
+            currentColor = this.dataset.color;
+        });
+    });
+
+    // Line width change
+    lineWidthSlider.addEventListener('input', function() {
+        currentLineWidth = parseInt(this.value);
+    });
+
+    function getCanvasPoint(e) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+            x: (e.clientX - rect.left) * (canvas.width / rect.width) / (window.devicePixelRatio || 1),
+            y: (e.clientY - rect.top) * (canvas.height / rect.height) / (window.devicePixelRatio || 1)
+        };
+    }
+
+    function startDrawing(e) {
+        isDrawing = true;
+        const point = getCanvasPoint(e);
+        
+        currentPath = [{
+            x: point.x,
+            y: point.y,
+            color: currentColor,
+            lineWidth: currentLineWidth
+        }];
+        
+        ctx.beginPath();
+        ctx.strokeStyle = currentColor;
+        ctx.lineWidth = currentLineWidth;
+        ctx.moveTo(point.x, point.y);
+        
+        // Hide overlay when starting to draw
+        if (canvasOverlay) {
+            canvasOverlay.style.opacity = '0';
+            setTimeout(() => {
+                canvasOverlay.style.display = 'none';
+            }, 300);
+        }
+    }
+
+    function draw(e) {
+        if (!isDrawing) return;
+        
+        const point = getCanvasPoint(e);
+        currentPath.push({
+            x: point.x,
+            y: point.y,
+            color: currentColor,
+            lineWidth: currentLineWidth
+        });
+        
+        ctx.lineTo(point.x, point.y);
+        ctx.stroke();
+        hasSignature = true;
+    }
+
+    function stopDrawing() {
+        if (isDrawing && currentPath.length > 0) {
+            paths.push([...currentPath]);
+            isDrawing = false;
+            saveSignature();
+        }
+    }
+
+    function handleTouch(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        if (!touch) return;
+        
+        const mouseEvent = new MouseEvent(
+            e.type === 'touchstart' ? 'mousedown' : 
+            e.type === 'touchmove' ? 'mousemove' : 'mouseup', 
+            {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            }
+        );
+        canvas.dispatchEvent(mouseEvent);
+    }
+
+    function saveSignature() {
+        if (hasSignature) {
+            signatureInput.value = canvas.toDataURL('image/png', 0.8);
+        }
+    }
+
+    function redrawCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        paths.forEach(path => {
+            if (path.length > 0) {
+                ctx.beginPath();
+                ctx.strokeStyle = path[0].color;
+                ctx.lineWidth = path[0].lineWidth;
+                ctx.moveTo(path[0].x, path[0].y);
+                
+                for (let i = 1; i < path.length; i++) {
+                    ctx.lineTo(path[i].x, path[i].y);
+                }
+                ctx.stroke();
+            }
+        });
+    }
+
+    // Clear signature
+    clearBtn.addEventListener('click', function() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        signatureInput.value = '';
+        hasSignature = false;
+        paths = [];
+        currentPath = [];
+        
+        // Show overlay again
+        if (canvasOverlay) {
+            canvasOverlay.style.display = 'flex';
+            canvasOverlay.style.opacity = '1';
+        }
+        
+        // Add animation effect
+        this.classList.add('animate-pulse');
+        setTimeout(() => {
+            this.classList.remove('animate-pulse');
+        }, 200);
+    });
+
+    // Undo last stroke
+    undoBtn.addEventListener('click', function() {
+        if (paths.length > 0) {
+            paths.pop();
+            redrawCanvas();
+            
+            if (paths.length === 0) {
+                hasSignature = false;
+                signatureInput.value = '';
+                if (canvasOverlay) {
+                    canvasOverlay.style.display = 'flex';
+                    canvasOverlay.style.opacity = '1';
+                }
+            } else {
+                saveSignature();
+            }
+            
+            // Add animation effect
+            this.classList.add('animate-pulse');
+            setTimeout(() => {
+                this.classList.remove('animate-pulse');
+            }, 200);
+        }
+    });
+
+    // Set default color as active
+    colorBtns[0].classList.add('ring-2', 'ring-white', 'ring-offset-2', 'ring-offset-transparent');
+
+    // Input focus effects
+    const nameInput = document.getElementById('name');
+    nameInput.addEventListener('focus', function() {
+        this.parentElement.classList.add('scale-105');
+    });
+    
+    nameInput.addEventListener('blur', function() {
+        this.parentElement.classList.remove('scale-105');
+    });
+});
+</script>
+{% endblock %}

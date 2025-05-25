@@ -1,0 +1,264 @@
+{% extends "base.html" %}
+
+{% block title %}Trang chủ - Hệ thống chữ ký số{% endblock %}
+
+{% block content %}
+<!-- Hero Section với gradient background -->
+<div class="relative min-h-screen bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 overflow-hidden">
+    <!-- Animated background elements -->
+    <div class="absolute inset-0">
+        <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse"></div>
+        <div class="absolute top-1/3 right-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse animation-delay-2000"></div>
+        <div class="absolute bottom-1/4 left-1/3 w-96 h-96 bg-indigo-500 rounded-full mix-blend-multiply filter blur-xl opacity-10 animate-pulse animation-delay-4000"></div>
+    </div>
+
+    <!-- Main content -->
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-20">
+        <!-- Header Section -->
+        <div class="text-center mb-20">
+            <div class="inline-flex items-center justify-center p-2 bg-white/10 backdrop-blur-sm rounded-full mb-6">
+                <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-full p-4">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                    </svg>
+                </div>
+            </div>
+            
+            <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-tight">
+                Hệ thống 
+                <span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                    Chữ ký số RSA
+                </span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-blue-100 max-w-3xl mx-auto mb-8 leading-relaxed">
+                Ứng dụng bảo mật và xác thực tiên tiến với công nghệ mã hóa RSA và băm SHA-256
+            </p>
+            
+            <!-- Feature badges -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12">
+                <span class="px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full text-sm font-medium border border-white/30">
+                    🔐 Mã hóa RSA 2048-bit
+                </span>
+                <span class="px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full text-sm font-medium border border-white/30">
+                    🔐 Băm SHA-256
+                </span>
+                <span class="px-4 py-2 bg-white/20 backdrop-blur-sm text-white rounded-full text-sm font-medium border border-white/30">
+                    ✨ Giao diện thân thiện
+                </span>
+            </div>
+        </div>
+
+        <!-- Main Action Cards -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+            <!-- Đăng ký người ký -->
+            <div class="group relative">
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                <div class="relative bg-white/10 backdrop-blur-lg p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
+                    <div class="text-center">
+                        <div class="bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-2xl w-16 h-16 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-1a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Đăng ký người ký</h3>
+                        <p class="text-blue-100 text-sm mb-6 leading-relaxed">Tạo tài khoản và sinh cặp khóa RSA bảo mật</p>
+                        <a href="{{ url_for('register') }}" class="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                            Bắt đầu
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ký file -->
+            <div class="group relative">
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-green-500 to-blue-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                <div class="relative bg-white/10 backdrop-blur-lg p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
+                    <div class="text-center">
+                        <div class="bg-gradient-to-r from-green-500 to-blue-500 text-white rounded-2xl w-16 h-16 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Ký file</h3>
+                        <p class="text-blue-100 text-sm mb-6 leading-relaxed">Tải lên và ký số các tài liệu của bạn</p>
+                        <a href="{{ url_for('sign_file_route') }}" class="inline-flex items-center justify-center bg-gradient-to-r from-green-500 to-blue-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-green-600 hover:to-blue-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                            Ký ngay
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- File đã ký -->
+            <div class="group relative">
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-indigo-500 to-cyan-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                <div class="relative bg-white/10 backdrop-blur-lg p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
+                    <div class="text-center">
+                        <div class="bg-gradient-to-r from-indigo-500 to-cyan-500 text-white rounded-2xl w-16 h-16 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">File đã ký</h3>
+                        <p class="text-blue-100 text-sm mb-6 leading-relaxed">Quản lý và tải xuống các file đã ký của bạn </p>
+                        <a href="{{ url_for('signed_files') }}" class="inline-flex items-center justify-center bg-gradient-to-r from-indigo-500 to-cyan-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-indigo-600 hover:to-cyan-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                            Xem file
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Xác minh chữ ký -->
+            <div class="group relative">
+                <div class="absolute -inset-0.5 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
+                <div class="relative bg-white/10 backdrop-blur-lg p-8 rounded-2xl border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:-translate-y-2 hover:shadow-2xl">
+                    <div class="text-center">
+                        <div class="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-2xl w-16 h-16 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Xác minh chữ ký</h3>
+                        <p class="text-blue-100 text-sm mb-6 leading-relaxed">Kiểm tra tính xác thực và toàn vẹn của chữ ký </p>
+                        <a href="{{ url_for('verify') }}" class="inline-flex items-center justify-center bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-3 rounded-xl font-semibold hover:from-purple-600 hover:to-pink-600 transition-all duration-300 transform hover:scale-105 hover:shadow-lg">
+                            Xác minh
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="bg-white/5 backdrop-blur-lg rounded-3xl p-12 border border-white/10 mb-20">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-white mb-4">Tại sao chọn chúng tôi?</h2>
+                <p class="text-xl text-blue-100">Công nghệ hàng đầu về bảo mật và chữ ký số</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center group">
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl w-16 h-16 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Bảo mật tuyệt đối</h3>
+                    <p class="text-blue-100">Sử dụng mã hóa RSA 2048-bit và thuật toán băm SHA-256 tiêu chuẩn ngành</p>
+                </div>
+                
+                <div class="text-center group">
+                    <div class="bg-gradient-to-r from-indigo-500 to-blue-500 rounded-2xl w-16 h-16 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Nhanh chóng</h3>
+                    <p class="text-blue-100">Xử lý ký và xác minh chữ ký trong tích tắc với hiệu suất cao</p>
+                </div>
+                
+                <div class="text-center group">
+                    <div class="bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl w-16 h-16 flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Dễ sử dụng</h3>
+                    <p class="text-blue-100">Giao diện trực quan, thân thiện với người dùng ở mọi cấp độ</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- How it works Section -->
+        <div class="bg-white/5 backdrop-blur-lg rounded-3xl p-12 border border-white/10">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-white mb-4">Hướng dẫn sử dụng</h2>
+                <p class="text-xl text-blue-100">Quy trình đơn giản và hiệu quả</p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- Quy trình ký file -->
+                <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-gradient-to-r from-green-500 to-blue-500 rounded-full w-12 h-12 flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Để ký file</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0">1</div>
+                            <p class="text-blue-100">Đăng ký tài khoản và hệ thống sẽ tự động tạo cặp khóa RSA bảo mật</p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0">2</div>
+                            <p class="text-blue-100">Vẽ chữ ký cá nhân của bạn để tăng tính xác thực (tùy chọn)</p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0">3</div>
+                            <p class="text-blue-100">Tải lên tài liệu cần ký và chọn tên người ký</p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-blue-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0">4</div>
+                            <p class="text-blue-100">Nhận file đã ký cùng chữ ký số được mã hóa</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quy trình xác minh -->
+                <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-8 border border-white/10">
+                    <div class="flex items-center mb-6">
+                        <div class="bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full w-12 h-12 flex items-center justify-center mr-4">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white">Để xác minh</h3>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="flex items-start">
+                            <div class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0">1</div>
+                            <p class="text-blue-100">Tải lên file cần kiểm tra tính xác thực</p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0">2</div>
+                            <p class="text-blue-100">Chọn người ký từ danh sách hoặc nhập khóa công khai</p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0">3</div>
+                            <p class="text-blue-100">Dán chữ ký số (định dạng base64) vào ô tương ứng</p>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-purple-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm font-bold mr-4 mt-1 flex-shrink-0">4</div>
+                            <p class="text-blue-100">Nhận kết quả xác minh tức thì - hợp lệ hay không hợp lệ</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add custom CSS for animation delays -->
+<style>
+.animation-delay-2000 {
+    animation-delay: 2s;
+}
+.animation-delay-4000 {
+    animation-delay: 4s;
+}
+</style>
+{% endblock %}

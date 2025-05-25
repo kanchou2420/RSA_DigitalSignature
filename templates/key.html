@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Khóa của {{ signer[1] }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <div class="bg-white rounded-lg shadow-lg p-8">
+        <h1 class="text-2xl font-bold text-center text-gray-800 mb-8">
+            Thông tin khóa của {{ signer[1] }}
+        </h1>
+
+        <!-- Thông tin cơ bản -->
+        <div class="bg-gray-50 p-4 rounded-lg mb-6">
+            <div class="grid md:grid-cols-2 gap-4">
+                <div>
+                    <strong class="text-gray-700">Tên:</strong> {{ signer[1] }}
+                </div>
+                <div>
+                    <strong class="text-gray-700">Ngày tạo:</strong> {{ signer[5] }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Chữ ký vẽ tay -->
+        {% if signer[4] %}
+        <div class="mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-3">Chữ ký vẽ tay</h2>
+            <div class="border border-gray-300 rounded-lg p-4 bg-white text-center">
+                <img src="{{ signer[4] }}" alt="Chữ ký của {{ signer[1] }}" 
+                     class="max-w-full h-auto mx-auto border border-gray-200 rounded">
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Khóa công khai -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-lg font-semibold text-gray-800">Khóa công khai (Public Key)</h2>
+                <button onclick="copyPublicKey()" 
+                        class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition duration-200">
+                    Sao chép
+                </button>
+            </div>
+            <textarea id="publicKey" 
+                      readonly 
+                      class="w-full h-32 p-3 bg-gray-50 border border-gray-300 rounded-md text-sm font-mono resize-none">{{ signer[3] }}</textarea>
+        </div>
+
+        <!-- Khóa riêng tư -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-3">
+                <h2 class="text-lg font-semibold text-gray-800">Khóa riêng tư (Private Key)</h2>
+                <div class="space-x-2">
+                    <button onclick="togglePrivateKey()" 
+                            id="toggleBtn"
+                            class="bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600 transition duration-200">
+                        Hiện
+                    </button>
+                    <button onclick="copyPrivateKey()" 
+                            class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600 transition duration-200">
+                        Sao chép
+                    </button>
+                </div>
+            </div>
+            
+            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-3">
+                <div class="flex items-start space-x-2">
+                    <svg class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                    </svg>
+                    <div>
+                        <h3 class="text-sm font-medium text-red-800">Cảnh báo bảo mật</h3>
+                        <p class="text-sm text-red-700 mt-1">
+                            Khóa riêng tư phải được bảo mật tuyệt đối. Không chia sẻ khóa này với bất kỳ ai!
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <textarea id="privateKey" 
+                      readonly 
+                      style="display: none;"
+                      class="w-full h-32 p-3 bg-gray-50 border border-gray-300 rounded-md text-sm font-mono resize-none">{{ signer[2] }}</textarea>
+        </div>
+
+        <!-- Thông tin kỹ thuật -->
+        <div class="bg-blue-50 p-4 rounded-lg mb-6">
+            <h3 class="font-semibold text-blue-800 mb-2">Thông tin kỹ thuật</h3>
+            <div class="text-sm text-blue-700 space-y-1">
+                <p>• Thuật toán: RSA-2048</p>
+                <p>• Thuật toán băm: SHA-256</p>
+                <p>• Padding: PSS (Probabilistic Signature Scheme)</p>
+                <p>• Format khóa: PEM</p>
+            </div>
+        </div>
+
+        <!-- Nút điều hướng -->
+        <div class="flex justify-center space-x-4">
+            <a href="{{ url_for('sign_file_route') }}" 
+               class="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 transition duration-200 font-medium">
+                Ký file
+            </a>
+            <a href="{{ url_for('signed_files') }}" 
+               class="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition duration-200 font-medium">
+                Xem file đã ký
+            </a>
+            <a href="{{ url_for('index') }}" 
+               class="bg-gray-500 text-white px-6 py-2 rounded-md hover:bg-gray-600 transition duration-200 font-medium">
+                Trang chủ
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+function togglePrivateKey() {
+    const privateKey = document.getElementById('privateKey');
+    const toggleBtn = document.getElementById('toggleBtn');
+    
+    if (privateKey.style.display === 'none') {
+        privateKey.style.display = 'block';
+        toggleBtn.textContent = 'Ẩn';
+        toggleBtn.className = 'bg-red-500 text-white px-3 py-1 rounded text-sm hover:bg-red-600 transition duration-200';
+    } else {
+        privateKey.style.display = 'none';
+        toggleBtn.textContent = 'Hiện';
+        toggleBtn.className = 'bg-yellow-500 text-white px-3 py-1 rounded text-sm hover:bg-yellow-600 transition duration-200';
+    }
+}
+
+function copyPublicKey() {
+    const publicKey = document.getElementById('publicKey');
+    publicKey.select();
+    document.execCommand('copy');
+    
+    // Hiện thông báo
+    showNotification('Đã sao chép khóa công khai!');
+}
+
+function copyPrivateKey() {
+    const privateKey = document.getElementById('privateKey');
+    if (privateKey.style.display === 'none') {
+        alert('Vui lòng hiện khóa riêng tư trước khi sao chép!');
+        return;
+    }
+    
+    privateKey.select();
+    document.execCommand('copy');
+    
+    // Hiện thông báo
+    showNotification('Đã sao chép khóa riêng tư! Hãy bảo mật nó cẩn thận!');
+}
+
+function showNotification(message) {
+    // Tạo div thông báo
+    const notification = document.createElement('div');
+    notification.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-md shadow-lg z-50';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    // Xóa sau 3 giây
+    setTimeout(() => {
+        document.body.removeChild(notification);
+    }, 3000);
+}
+</script>
+{% endblock %}
