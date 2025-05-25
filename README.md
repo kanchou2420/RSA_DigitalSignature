@@ -136,7 +136,7 @@ Upload file → Nhập public key → Nhập chữ ký → Xác minh → Kết q
 <img src="./picture/image.png">
 
 ### 1. Tạo người ký mới
-1. Truy cập `/register`
+1. Truy cập `Đăng ký`
 2. Nhập tên người ký
 3. (Tùy chọn) Thêm hình ảnh chữ ký
 4. Nhấn "Đăng ký"
@@ -144,7 +144,7 @@ Upload file → Nhập public key → Nhập chữ ký → Xác minh → Kết q
 <img src="./picture/image2.png">
 
 ### 2. Ký file
-1. Truy cập `/sign`
+1. Truy cập `Ký Files`
 2. Chọn người ký từ danh sách
 3. Upload file cần ký
 4. Nhấn "Ký file"
@@ -152,7 +152,7 @@ Upload file → Nhập public key → Nhập chữ ký → Xác minh → Kết q
 <img src="./picture/image3.png">
 
 ### 3. Xác minh chữ ký
-1. Truy cập `/verify`
+1. Truy cập `Xác minh chữ ký`
 2. Upload file cần kiểm tra
 3. Nhập/chọn public key
 4. Nhập chữ ký (base64)
@@ -161,7 +161,7 @@ Upload file → Nhập public key → Nhập chữ ký → Xác minh → Kết q
 <img src="./picture/image4.png">
 
 ### 4. Thông tin các files đã kí
-1. Truy cập `/key`
+1. Truy cập `Files đã ký`
 2. Download files
 3. Download chữ kí
 4. Download khóa
