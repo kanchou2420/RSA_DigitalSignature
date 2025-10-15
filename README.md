@@ -1,4 +1,17 @@
 # Hệ thống chữ ký số RSA
+<div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px;">
+  <img src="REDMI/logoDaiNam.png" alt="DaiNam University Logo" style="width: 250px; margin: 0 10px;">
+  <img src="REDMI/LogoAIoTLab.png" alt="AIoT Lab Logo" style="width: 250px; margin: 0 10px;">
+</div>
+
+<!-- Navigation Buttons -->
+<div style="text-align: center; margin-bottom: 20px;">
+  <a href="https://www.facebook.com/DNUAIoTLab" style="display: inline-block; padding: 10px 20px; background-color: #28a745; color: #fff; border-radius: 5px; text-decoration: none; margin: 0 5px;">Made by AIoTLab</a>
+  <a href="https://fitdnu.net/" style="display: inline-block; padding: 10px 20px; background-color: #dc3545; color: #fff; border-radius: 5px; text-decoration: none; margin: 0 5px;">Fit DNU</a>
+  <a href="https://dainam.edu.vn/vi" style="display: inline-block; padding: 10px 20px; background-color: #ffc107; color: #333; border-radius: 5px; text-decoration: none; margin: 0 5px;">DaiNam University</a>
+</div>
+
+<hr>
 
 ## 📋 Tổng quan
 
